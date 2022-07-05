@@ -1,4 +1,4 @@
-# AZURE_RS 
+# Azure Rust (forked from azure-rs)
 
 ## WIP
 
