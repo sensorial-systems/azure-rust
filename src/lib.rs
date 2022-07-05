@@ -605,6 +605,7 @@ impl AzureClient {
     }
 }
 
+#[allow(dead_code)]
 fn next_link(l: &Link) -> Option<String> {
     l.values()
         .into_iter()
