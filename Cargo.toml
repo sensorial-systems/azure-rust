@@ -12,17 +12,17 @@
 
 [package]
 edition = "2018"
-name = "azure_rs"
+name = "azure-rs"
 version = "0.3.0"
-authors = ["Behxhet Sadiku <bensadiku65@gmail.com>"]
+authors = ["Behxhet Sadiku <bensadiku65@gmail.com>", "Danilo Guanabara <danilo@sensorial.systems>"]
 description = "Rust client for the Azure DevOps Server"
-homepage = "https://github.com/bensadiku/azure_rs"
-documentation = "https://docs.rs/azure_rs"
+homepage = "https://github.com/sensorial-systems/azure-rs"
+documentation = "https://docs.rs/azure-rs"
 readme = "README.md"
 keywords = ["Azure", "AzureDevOps", "TFS", "Rust"]
 categories = ["api-bindings", "web-programming::http-client"]
 license = "MIT"
-repository = "https://github.com/bensadiku/azure_rs"
+repository = "https://github.com/sensorial-systems/azure-rs"
 [dependencies.base64]
 version = "0.12"
 
