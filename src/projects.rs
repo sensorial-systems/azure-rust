@@ -163,14 +163,14 @@ mod new_project_options {
 
 mod project_list_response {
     use serde::Deserialize;
-    #[serde(rename_all = "camelCase")]
     #[derive(Debug, Deserialize)]
+    #[serde(rename_all = "camelCase")]
     pub struct ProjectsResponse {
         pub value: Vec<Value>,
         pub count: i64,
     }
-    #[serde(rename_all = "camelCase")]
     #[derive(Debug, Deserialize)]
+    #[serde(rename_all = "camelCase")]
     pub struct Value {
         pub id: String,
         pub name: String,
@@ -234,8 +234,8 @@ impl Project {
 
 mod project_response {
     use serde::Deserialize;
-    #[serde(rename_all = "camelCase")]
     #[derive(Debug, Deserialize)]
+    #[serde(rename_all = "camelCase")]
     pub struct ProjectResponse {
         pub id: String,
         pub name: String,

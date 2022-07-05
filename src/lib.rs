@@ -309,7 +309,7 @@ impl AzureClient {
         authentication: AuthenticationConstraint,
     ) -> Future<(Url, Option<String>)> {
         let mut m = uri.to_owned();
-        m.push_str(&format!("?{}", self.api_version.to_string()));
+        m.push_str(&self.api_version.to_string());
         let parsed_url = m.parse::<Url>();
 
         match self.credentials(authentication) {
@@ -412,6 +412,7 @@ impl AzureClient {
             let (remaining, reset, etag) = get_header_values(response.headers());
 
             let status = response.status();
+            println!("status {}", status);
             let link = response
                 .headers()
                 .get(LINK)
@@ -604,7 +605,7 @@ impl AzureClient {
     }
 }
 
-#[allow(unused)]
+#[allow(dead_code)]
 fn next_link(l: &Link) -> Option<String> {
     l.values()
         .into_iter()
