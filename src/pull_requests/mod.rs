@@ -16,47 +16,48 @@ pub use pull::PullRequest;
 pub use pulls::PullRequests;
 
 mod pr_get_response {
-    use super::pr_refs::LinksRefs;
+    // use super::pr_refs::LinksRefs;
     use serde::*;
 
     #[derive(Debug, Deserialize)]
     pub struct PullRequestResponse {
-        pub repository: Repository,
+        // #[serde(flatten)]
+        // pub repository: Repository,
         #[serde(rename = "pullRequestId")]
         pub pull_request_id: i64,
-        #[serde(rename = "codeReviewId")]
-        pub code_review_id: i64,
-        pub status: String,
+        // #[serde(rename = "codeReviewId")]
+        // pub code_review_id: Option<i64>,
+        // pub status: Option<String>,
         #[serde(rename = "createdBy")]
         pub created_by: CreatedBy,
-        #[serde(rename = "creationDate")]
-        pub creation_date: String,
-        pub title: String,
-        pub description: String,
-        #[serde(rename = "sourceRefName")]
-        pub source_ref_name: String,
-        #[serde(rename = "targetRefName")]
-        pub target_ref_name: String,
-        #[serde(rename = "mergeStatus")]
-        pub merge_status: String,
-        #[serde(rename = "isDraft")]
-        pub is_draft: bool,
-        #[serde(rename = "mergeId")]
-        pub merge_id: String,
-        #[serde(rename = "lastMergeSourceCommit")]
-        pub last_merge_source_commit: LastMergeSourceCommit,
-        #[serde(rename = "lastMergeTargetCommit")]
-        pub last_merge_target_commit: LastMergeTargetCommit,
-        #[serde(rename = "lastMergeCommit")]
-        pub last_merge_commit: LastMergeCommit,
-        pub reviewers: Vec<::serde_json::Value>,
-        pub url: String,
-        #[serde(rename = "_links")]
-        pub links: LinksRefs,
-        #[serde(rename = "supportsIterations")]
-        pub supports_iterations: bool,
-        #[serde(rename = "artifactId")]
-        pub artifact_id: String,
+        // #[serde(rename = "creationDate")]
+        // pub creation_date: String,
+        // pub title: String,
+        // pub description: Option<String>,
+        // #[serde(rename = "sourceRefName")]
+        // pub source_ref_name: String,
+        // #[serde(rename = "targetRefName")]
+        // pub target_ref_name: String,
+        // #[serde(rename = "mergeStatus")]
+        // pub merge_status: String,
+        // #[serde(rename = "isDraft")]
+        // pub is_draft: bool,
+        // #[serde(rename = "mergeId")]
+        // pub merge_id: String,
+        // #[serde(rename = "lastMergeSourceCommit")]
+        // pub last_merge_source_commit: LastMergeSourceCommit,
+        // #[serde(rename = "lastMergeTargetCommit")]
+        // pub last_merge_target_commit: LastMergeTargetCommit,
+        // #[serde(rename = "lastMergeCommit")]
+        // pub last_merge_commit: LastMergeCommit,
+        // pub reviewers: Vec<::serde_json::Value>,
+        // pub url: String,
+        // #[serde(rename = "_links")]
+        // pub links: LinksRefs,
+        // #[serde(rename = "supportsIterations")]
+        // pub supports_iterations: bool,
+        // #[serde(rename = "artifactId")]
+        // pub artifact_id: String,
     }
     #[derive(Debug, Deserialize)]
     pub struct Repository {
@@ -88,8 +89,8 @@ mod pr_get_response {
         #[serde(rename = "displayName")]
         pub display_name: String,
         pub url: String,
-        #[serde(rename = "_links")]
-        pub links: Links,
+        // #[serde(rename = "_links")]
+        // pub links: Links,
         pub id: String,
         #[serde(rename = "uniqueName")]
         pub unique_name: String,
@@ -256,21 +257,21 @@ mod pr_refs {
     pub struct LinksRefs {
         #[serde(rename = "self")]
         pub self_field: Href,
-        pub repository: RepositoryRef,
+        pub repository: Option<RepositoryRef>,
         #[serde(rename = "workItems")]
-        pub work_items: WorkItemsRef,
+        pub work_items: Option<WorkItemsRef>,
         #[serde(rename = "sourceBranch")]
-        pub source_branch: SourceBranchRef,
+        pub source_branch: Option<SourceBranchRef>,
         #[serde(rename = "targetBranch")]
-        pub target_branch: TargetBranchRef,
-        pub statuses: StatusesRef,
+        pub target_branch: Option<TargetBranchRef>,
+        pub statuses: Option<StatusesRef>,
         #[serde(rename = "sourceCommit")]
-        pub source_commit: SourceCommitRef,
+        pub source_commit: Option<SourceCommitRef>,
         #[serde(rename = "targetCommit")]
-        pub target_commit: TargetCommitRef,
+        pub target_commit: Option<TargetCommitRef>,
         #[serde(rename = "createdBy")]
-        pub created_by: CreatedByRef,
-        pub iterations: IterationsRef,
+        pub created_by: Option<CreatedByRef>,
+        pub iterations: Option<IterationsRef>,
     }
     #[derive(Debug, Deserialize)]
     pub struct Href {
