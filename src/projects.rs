@@ -35,6 +35,7 @@ impl Projects {
             uri.push(query);
         }
 
+        // FIXME: It seems incorrect. Only one ? it used in a URL to start a query and they should be separated with &.
         self.ops.get(&uri.join("?"))
     }
 }

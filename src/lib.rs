@@ -28,6 +28,7 @@ pub mod errors;
 pub mod projects;
 pub mod repository;
 pub mod pull_requests;
+pub mod work_items;
 
 pub use crate::errors::{Error, ErrorKind, Result};
 #[cfg(feature = "httpcache")]
@@ -35,6 +36,7 @@ pub use crate::http_cache::{BoxedHttpCache, HttpCache};
 
 use crate::projects::{Project, Projects};
 use crate::repository::{Repositories, Repository};
+use crate::work_items::{WorkItem, WorkItems};
 
 const DEFAULT_HOST: &str = "https://dev.azure.com";
 /// A type alias for `Futures` that may return `azure_rs::Errors`
@@ -111,6 +113,7 @@ impl Default for SortDirection {
 pub enum ApiVersion {
     V5_1,
     V5_0,
+    V7_1Preview
 }
 
 impl fmt::Display for ApiVersion {
@@ -118,6 +121,7 @@ impl fmt::Display for ApiVersion {
         match *self {
             ApiVersion::V5_1 => "api-version=5.1",
             ApiVersion::V5_0 => "api-version=5.0",
+            ApiVersion::V7_1Preview => "api-version=7.1-preview"
         }
         .fmt(f)
     }
@@ -261,6 +265,24 @@ impl AzureClient {
         self.org = org.into();
     }
 
+    pub async fn work_item(&self, id: usize) -> Result<WorkItem> {
+        Ok(self.get(&format!("/{}/_apis/wit/workItems/{}", self.org, id)).await?)
+    }
+
+    pub async fn query_work_items(&self, query: &str) -> Result<Vec<WorkItem>> {
+        let work_items_refs: WorkItems = self.post(&format!("/{}/_apis/wit/wiql", self.org), query.as_bytes().into()).await?;
+        let mut work_items = Vec::new();
+        for work_item in work_items_refs.work_items {
+            work_items.push(self.work_item(work_item.id).await?);
+        }
+        Ok(work_items)
+    }
+
+    pub async fn work_items(&self) -> Result<Vec<WorkItem>> {
+        let query = r#"{ "query": "Select * From WorkItems" }"#;
+        self.query_work_items(&query).await
+    }
+
     pub fn projects(&self) -> Projects {
         Projects::new(self.clone())
     }
@@ -309,7 +331,7 @@ impl AzureClient {
         authentication: AuthenticationConstraint,
     ) -> Future<(Url, Option<String>)> {
         let mut m = uri.to_owned();
-        m.push_str(&self.api_version.to_string());
+        m.push_str(&format!("?{}", self.api_version.to_string()));
         let parsed_url = m.parse::<Url>();
 
         match self.credentials(authentication) {
@@ -319,7 +341,7 @@ impl AzureClient {
                         u.query_pairs_mut()
                             .append_pair("client_id", id)
                             .append_pair("client_secret", secret);
-                        (u, None)
+                        (u, None)	
                     })
                     .map_err(Error::from),
             )),
@@ -412,7 +434,6 @@ impl AzureClient {
             let (remaining, reset, etag) = get_header_values(response.headers());
 
             let status = response.status();
-            println!("status {}", status);
             let link = response
                 .headers()
                 .get(LINK)
@@ -530,9 +551,10 @@ impl AzureClient {
     where
         D: DeserializeOwned + 'static + Send,
     {
+        let uri = self.host.clone() + uri;
         self.request_entity(
             Method::GET,
-            &(self.host.clone() + uri),
+            &uri,
             None,
             media,
             AuthenticationConstraint::Unconstrained,
